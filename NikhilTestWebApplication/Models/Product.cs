@@ -1,14 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NikhilTestWebApplication.Models
 {
     public class Product
     {
-        public int userId { get; set; }
-        public string? userName { get; set; } // optional, not mapped to DB
+        [Key]
+        public int Id { get; set; }   // PRIMARY KEY
 
+        public int UserId { get; set; }
 
-        [Precision(18,2)]
-        public decimal price { get; set; }
+        [NotMapped]
+        public string? UserName { get; set; }
+
+        [Precision(18, 2)]
+        public decimal Price { get; set; }
     }
 }

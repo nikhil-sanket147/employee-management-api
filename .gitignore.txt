@@ -2,7 +2,7 @@
 .vs/
 .vscode/
 
-# Build output
+# Build output (IMPORTANT)
 bin/
 obj/
 
@@ -13,15 +13,10 @@ obj/
 # Logs
 *.log
 
-# Cache
+# Cache files
 *.cache
 
-# Executables
-*.exe
-*.dll
-*.pdb
-
-# Database
+# Database (optional - depends on project)
 *.db
 
 # OS files

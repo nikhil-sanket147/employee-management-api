@@ -1,5 +1,21 @@
 [
   {
+    "ContainingType": "NikhilTestWebApplication.Controllers.AuthController",
+    "Method": "Login",
+    "RelativePath": "api/Auth/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "NikhilTestWebApplication.Models.LoginRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "NikhilTestWebApplication.Controllers.ProductController",
     "Method": "Create",
     "RelativePath": "api/Product/Create",

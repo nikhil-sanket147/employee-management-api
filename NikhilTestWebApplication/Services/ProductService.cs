@@ -30,23 +30,23 @@ namespace NikhilTestWebApplication.Services
         public async Task<Product?> GetProductById(int id)
         {
             var product = await _context.Products
-                .FirstOrDefaultAsync(x => x.userId == id);
+                .FirstOrDefaultAsync(x => x.UserId == id);
 
             if (product == null)
                 return null;
 
             // 🔥 Call User microservice
-            if (product.userId > 0)
+            if (product.UserId > 0)
             {
                 try
                 {
-                    var user = await _userClient.GetUserById(product.userId);
-                    product.userName = user?.Username; // optional enrichment
+                    var user = await _userClient.GetUserById(product.UserId);
+                    product.UserName = user?.Username; // optional enrichment
                 }
                 catch
                 {
                     // Fail-safe: product should still return
-                    product.userName = null;
+                    product.UserName = null;
                 }
             }
 
@@ -65,9 +65,9 @@ namespace NikhilTestWebApplication.Services
             if (existing == null)
                 return false;
 
-            existing.userName = product.userName;
-            existing.price = product.price;
-            existing.userId = product.userId;
+            existing.UserName = product.UserName;
+            existing.Price = product.Price;
+            existing.UserId = product.UserId;
 
             await _context.SaveChangesAsync();
             return true;
