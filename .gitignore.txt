@@ -1,7 +1,8 @@
 # Visual Studio
 .vs/
+.vscode/
 
-# Build folders
+# Build output
 bin/
 obj/
 
@@ -12,11 +13,16 @@ obj/
 # Logs
 *.log
 
-# Database files
-*.db
+# Cache
+*.cache
 
-# Environment settings
-appsettings.Development.json
+# Executables
+*.exe
+*.dll
+*.pdb
+
+# Database
+*.db
 
 # OS files
 Thumbs.db

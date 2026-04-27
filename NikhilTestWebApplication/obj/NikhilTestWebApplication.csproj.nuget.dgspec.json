@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\nikhil.mhaske\\source\\repos\\NikhilTestWebApplication\\NikhilTestWebApplication\\NikhilTestWebApplication.csproj": {}
+    "C:\\Users\\nikhil.mhaske\\Documents\\employee-management-api\\NikhilTestWebApplication\\NikhilTestWebApplication.csproj": {}
   },
   "projects": {
-    "C:\\Users\\nikhil.mhaske\\source\\repos\\NikhilTestWebApplication\\NikhilTestWebApplication\\NikhilTestWebApplication.csproj": {
+    "C:\\Users\\nikhil.mhaske\\Documents\\employee-management-api\\NikhilTestWebApplication\\NikhilTestWebApplication.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\nikhil.mhaske\\source\\repos\\NikhilTestWebApplication\\NikhilTestWebApplication\\NikhilTestWebApplication.csproj",
+        "projectUniqueName": "C:\\Users\\nikhil.mhaske\\Documents\\employee-management-api\\NikhilTestWebApplication\\NikhilTestWebApplication.csproj",
         "projectName": "NikhilTestWebApplication",
-        "projectPath": "C:\\Users\\nikhil.mhaske\\source\\repos\\NikhilTestWebApplication\\NikhilTestWebApplication\\NikhilTestWebApplication.csproj",
+        "projectPath": "C:\\Users\\nikhil.mhaske\\Documents\\employee-management-api\\NikhilTestWebApplication\\NikhilTestWebApplication.csproj",
         "packagesPath": "C:\\Users\\nikhil.mhaske\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\nikhil.mhaske\\source\\repos\\NikhilTestWebApplication\\NikhilTestWebApplication\\obj\\",
+        "outputPath": "C:\\Users\\nikhil.mhaske\\Documents\\employee-management-api\\NikhilTestWebApplication\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
