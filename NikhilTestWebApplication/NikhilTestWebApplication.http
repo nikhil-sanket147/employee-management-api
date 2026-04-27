@@ -1,0 +1,6 @@
+@NikhilTestWebApplication_HostAddress = http://localhost:5052
+
+GET {{NikhilTestWebApplication_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
