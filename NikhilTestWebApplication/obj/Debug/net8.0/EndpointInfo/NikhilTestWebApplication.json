@@ -241,6 +241,18 @@
         }
       }
     },
+    "/api/Test/TestError/test-error": {
+      "get": {
+        "tags": [
+          "Test"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/User/GetAll": {
       "get": {
         "tags": [

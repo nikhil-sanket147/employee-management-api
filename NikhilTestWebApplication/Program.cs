@@ -1,10 +1,11 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using NikhilTestWebApplication.Data;
 using NikhilTestWebApplication.Interfaces;
+using NikhilTestWebApplication.Middleware;
 using NikhilTestWebApplication.Services;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -76,7 +77,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 

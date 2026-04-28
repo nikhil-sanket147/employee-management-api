@@ -137,6 +137,16 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "NikhilTestWebApplication.Controllers.TestController",
+    "Method": "TestError",
+    "RelativePath": "api/Test/TestError/test-error",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "NikhilTestWebApplication.Controllers.UserController",
     "Method": "Add",
     "RelativePath": "api/User/Add",

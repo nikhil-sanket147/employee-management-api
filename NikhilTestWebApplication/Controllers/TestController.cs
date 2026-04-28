@@ -14,7 +14,7 @@ namespace NikhilTestWebApplication.Controllers
         private readonly IConfiguration _configuration;
 
         private static readonly ConcurrentDictionary<string, string> _users = new();
-        
+
         public TestController(IConfiguration configuration)
         {
             _configuration = configuration;
@@ -27,7 +27,7 @@ namespace NikhilTestWebApplication.Controllers
 
         public class SignInModel
         {
-            public string UserName { get; set; }    
+            public string UserName { get; set; }
             public string Password { get; set; }
         }
 
@@ -52,7 +52,7 @@ namespace NikhilTestWebApplication.Controllers
             //{
             //    return StatusCode(500, ex.Message);
             //}
-            
+
 
             if (_users.ContainsKey(model.UserName))
                 return Conflict("User already exists.");
@@ -121,6 +121,12 @@ namespace NikhilTestWebApplication.Controllers
         {
             var username = User.Identity?.Name ?? "Unknown";
             return Ok(new { message = $"Welcome {username}! This is a protected route" });
+        }
+
+        [HttpGet("test-error")]
+        public IActionResult TestError()
+        {
+            throw new Exception("This is a test exception");
         }
     }
 }
