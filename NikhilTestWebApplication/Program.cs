@@ -1,3 +1,4 @@
+using Serilog;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -12,7 +13,12 @@ using NikhilTestWebApplication.Services;
 using NikhilTestWebApplication.Validators;
 using System.Text;
 
+//serilog
+Log.Logger = new LoggerConfiguration().WriteTo.Console().WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day).CreateLogger();
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog();
 
 // Controllers & Swagger
 builder.Services.AddControllers();
@@ -21,6 +27,7 @@ builder.Services.AddValidatorsFromAssemblyContaining<RegisterUserValidator>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//validation
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
     options.InvalidModelStateResponseFactory = context =>
