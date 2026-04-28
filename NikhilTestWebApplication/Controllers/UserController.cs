@@ -30,9 +30,19 @@ namespace NikhilTestWebApplication.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(User user)
+        public async Task<IActionResult> Add(CreateUserRequest request)
         {
+            var user = new User
+            {
+                Id = Guid.NewGuid(),
+                Username = request.Username,
+                Email = request.Email,
+                Password = request.Password,
+                Role = request.Role
+            };
+
             var created = await _userService.Add(user);
+
             return Ok(created);
         }
 

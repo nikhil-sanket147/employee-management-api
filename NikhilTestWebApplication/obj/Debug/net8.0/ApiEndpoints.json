@@ -171,8 +171,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "user",
-        "Type": "NikhilTestWebApplication.Models.User",
+        "Name": "request",
+        "Type": "NikhilTestWebApplication.Models.CreateUserRequest",
         "IsRequired": true
       }
     ],
@@ -277,7 +277,7 @@
     "Parameters": [
       {
         "Name": "uId",
-        "Type": "System.String",
+        "Type": "System.Guid",
         "IsRequired": false
       },
       {

@@ -5,7 +5,7 @@ namespace NikhilTestWebApplication.Models
     public class UploadFile
     {
         [JsonProperty(PropertyName = "uId")]
-        public string uId { get; set; }
+        public Guid uId { get; set; } = Guid.NewGuid();
 
         public IFormFile File { get; set; }
     }

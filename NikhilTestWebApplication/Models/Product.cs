@@ -7,7 +7,7 @@ namespace NikhilTestWebApplication.Models
     public class Product
     {
         [Key]
-        public int Id { get; set; }   // PRIMARY KEY
+        public Guid Id { get; set; } = Guid.NewGuid();   // PRIMARY KEY
 
         public int UserId { get; set; }
 
