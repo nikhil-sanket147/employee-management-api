@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using FluentValidation;
+using NikhilTestWebApplication.Models;
+using System.Net;
 using System.Text.Json;
 
 namespace NikhilTestWebApplication.Middleware
@@ -35,8 +37,14 @@ namespace NikhilTestWebApplication.Middleware
             {
                 Success = false,
                 Message = "Something went wrong",
-                //Detail = exception.Message
             };
+
+            if (exception is ValidationException validationException) {
+                statusCode = HttpStatusCode.BadRequest;
+                response.Message = "Validation failed";
+                response.Errors = validationException.Errors.Select
+                    (e => e.ErrorMessage).ToList();
+            }
 
             var result = JsonSerializer.Serialize(response);
 

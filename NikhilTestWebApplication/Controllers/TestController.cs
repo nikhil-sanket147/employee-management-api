@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Collections.Concurrent;
+using NikhilTestWebApplication.Models;
 
 namespace NikhilTestWebApplication.Controllers
 {
@@ -127,6 +128,12 @@ namespace NikhilTestWebApplication.Controllers
         public IActionResult TestError()
         {
             throw new Exception("This is a test exception");
+        }
+
+        [HttpPost("register")]
+        public IActionResult Register(RegisterUserRequest request)
+        {
+            return Ok("User registered successfully.");
         }
     }
 }

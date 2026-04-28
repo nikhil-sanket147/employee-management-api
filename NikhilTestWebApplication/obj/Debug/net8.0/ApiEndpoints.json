@@ -106,6 +106,22 @@
   },
   {
     "ContainingType": "NikhilTestWebApplication.Controllers.TestController",
+    "Method": "Register",
+    "RelativePath": "api/Test/Register/register",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "NikhilTestWebApplication.Models.RegisterUserRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "NikhilTestWebApplication.Controllers.TestController",
     "Method": "SignInAPI",
     "RelativePath": "api/Test/SignInAPI",
     "HttpMethod": "POST",
@@ -255,26 +271,5 @@
         "StatusCode": 200
       }
     ]
-  },
-  {
-    "ContainingType": "NikhilTestWebApplication.Controllers.WeatherForecastController",
-    "Method": "Get",
-    "RelativePath": "WeatherForecast",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": [
-      {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[NikhilTestWebApplication.WeatherForecast, NikhilTestWebApplication, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ],
-    "EndpointName": "GetWeatherForecast"
   }
 ]

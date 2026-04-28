@@ -1,18 +1,46 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using NikhilTestWebApplication.Data;
 using NikhilTestWebApplication.Interfaces;
 using NikhilTestWebApplication.Middleware;
+using NikhilTestWebApplication.Models;
 using NikhilTestWebApplication.Services;
+using NikhilTestWebApplication.Validators;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Controllers & Swagger
 builder.Services.AddControllers();
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<RegisterUserValidator>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.InvalidModelStateResponseFactory = context =>
+    {
+        var errors = context.ModelState
+            .Values
+            .SelectMany(v => v.Errors)
+            .Select(e => e.ErrorMessage)
+            .ToList();
+
+        var response = new ErrorResponse
+        {
+            Success = false,
+            Message = "Validation failed",
+            Errors = errors
+        };
+
+        return new BadRequestObjectResult(response);
+    };
+});
 
 // JWT
 var jwtSettings = builder.Configuration.GetSection("Jwt");

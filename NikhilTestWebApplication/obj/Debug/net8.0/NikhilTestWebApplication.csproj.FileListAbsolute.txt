@@ -339,3 +339,6 @@ C:\Users\nikhil.mhaske\Documents\employee-management-api\NikhilTestWebApplicatio
 C:\Users\nikhil.mhaske\Documents\employee-management-api\NikhilTestWebApplication\obj\Debug\net8.0\NikhilTestWebApplication.pdb
 C:\Users\nikhil.mhaske\Documents\employee-management-api\NikhilTestWebApplication\obj\Debug\net8.0\NikhilTestWebApplication.genruntimeconfig.cache
 C:\Users\nikhil.mhaske\Documents\employee-management-api\NikhilTestWebApplication\obj\Debug\net8.0\ref\NikhilTestWebApplication.dll
+C:\Users\nikhil.mhaske\Documents\employee-management-api\NikhilTestWebApplication\bin\Debug\net8.0\FluentValidation.dll
+C:\Users\nikhil.mhaske\Documents\employee-management-api\NikhilTestWebApplication\bin\Debug\net8.0\FluentValidation.AspNetCore.dll
+C:\Users\nikhil.mhaske\Documents\employee-management-api\NikhilTestWebApplication\bin\Debug\net8.0\FluentValidation.DependencyInjectionExtensions.dll
