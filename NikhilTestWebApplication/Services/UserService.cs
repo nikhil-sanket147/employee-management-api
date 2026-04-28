@@ -170,5 +170,24 @@ namespace NikhilTestWebApplication.Services
 
             return Regex.IsMatch(email, pattern);
         }
+
+        public async Task<PagedResponse<List<User>>> GetUsersAsync(PaginationParams pagination)
+        {
+            var query = _context.Users.AsQueryable();
+
+            //filtering 
+            if (!string.IsNullOrEmpty(pagination.Search))
+            {
+                query = query.Where(p => p.Username.Contains(pagination.Search));
+            }
+
+            var totalRecords = await query.CountAsync();
+
+            var users = await query.OrderBy(u => u.Id).Skip((pagination.PageNumber - 1) * pagination.PageSize).
+                Take(pagination.PageSize).ToListAsync();
+
+            return new PagedResponse<List<User>>(
+                    users,pagination.PageNumber, pagination.PageSize, totalRecords);
+        }
     }
 }

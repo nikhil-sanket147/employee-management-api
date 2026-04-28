@@ -11,5 +11,7 @@ namespace NikhilTestWebApplication.Interfaces
         Task<bool> Delete(int id);
 
         Task<UploadFileModel> UploadFile(UploadFile uploadFile);
+
+        Task<PagedResponse<List<User>>> GetUsersAsync(PaginationParams pagination);
     }
 }

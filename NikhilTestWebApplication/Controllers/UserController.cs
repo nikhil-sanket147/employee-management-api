@@ -58,5 +58,12 @@ namespace NikhilTestWebApplication.Controllers
             var response = await _userService.UploadFile(uploadFile);
             return response;
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetUsers([FromQuery] PaginationParams pagination)
+        {
+            var result = await _userService.GetUsersAsync(pagination);
+            return Ok(result);
+        }
     }
 }
