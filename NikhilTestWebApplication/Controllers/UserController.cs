@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using NikhilTestWebApplication.Interfaces;
 using NikhilTestWebApplication.Models;
 
@@ -91,17 +92,32 @@ namespace NikhilTestWebApplication.Controllers
             if (request.Role != null)
                 user.Role = request.Role;
 
-            await _userService.Update(user);
+            var updated = await _userService.Update(user);
 
-            return Ok(user);
+            var response = new UserDto
+            {
+                Id = updated.Id,
+                Username = updated.Username,
+                Email = updated.Email,
+                Role = updated.Role
+            };
+
+            return Ok(response);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             var result = await _userService.Delete(id);
             if (!result) return NotFound();
             return Ok(new { message = "User deleted" });
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> RestoreUser(Guid id) {
+            var user = await _userService.RestoreUser(id);
+            if (!user) return NotFound();
+            return Ok(new { message = "user restored." });
         }
 
         [HttpPost]

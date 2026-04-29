@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NikhilTestWebApplication.Data;
 using NikhilTestWebApplication.Interfaces;
 using NikhilTestWebApplication.Models;
@@ -18,12 +20,12 @@ namespace NikhilTestWebApplication.Services
 
         public async Task<IEnumerable<User>> GetAll()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Users.Where(u => u.IsActive).ToListAsync();
         }
 
         public async Task<User?> GetById(Guid id)
         {
-            return await _context.Users.FindAsync(id);
+            return await _context.Users.Where(u => u.Id == id && u.IsActive).FirstOrDefaultAsync();
         }
 
         public async Task<User> Add(User user)
@@ -47,18 +49,35 @@ namespace NikhilTestWebApplication.Services
             return existing;
         }
 
-        public async Task<bool> Delete(int id)
+        public async Task<bool> Delete(Guid id)
         {
             var user = await _context.Users.FindAsync(id);
             if (user == null) return false;
 
-            _context.Users.Remove(user);
+            if (!user.IsActive) return false;
+
+            user.IsActive = false;
+            user.IsArchieved = true;
             await _context.SaveChangesAsync();
 
             return true;
         }
 
+        public async Task<bool> RestoreUser(Guid id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null) return false;
 
+            if(user.IsActive) return false;
+
+            user.IsActive = true;
+            user.IsArchieved = false;
+
+            await _context.SaveChangesAsync();
+
+            return true;
+
+        }
 
 
         public async Task<UploadFileModel> UploadFile(UploadFile uploadFile)

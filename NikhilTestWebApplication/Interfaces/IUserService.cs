@@ -8,7 +8,9 @@ namespace NikhilTestWebApplication.Interfaces
         Task<User?> GetById(Guid id);
         Task<User> Add(User user);
         Task<User?> Update(User user);
-        Task<bool> Delete(int id);
+        Task<bool> Delete(Guid id);
+
+        Task<bool> RestoreUser(Guid id);
 
         Task<UploadFileModel> UploadFile(UploadFile uploadFile);
 
