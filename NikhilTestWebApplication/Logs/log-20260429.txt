@@ -1,0 +1,36 @@
+2026-04-29 11:08:58.188 +05:30 [INF] User profile is available. Using 'C:\Users\nikhil.mhaske\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-04-29 11:08:58.527 +05:30 [INF] Now listening on: https://localhost:7289
+2026-04-29 11:08:58.529 +05:30 [INF] Now listening on: http://localhost:5052
+2026-04-29 11:08:58.756 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2026-04-29 11:08:58.758 +05:30 [INF] Hosting environment: Development
+2026-04-29 11:08:58.761 +05:30 [INF] Content root path: C:\Users\nikhil.mhaske\Documents\employee-management-api\NikhilTestWebApplication
+2026-04-29 11:08:59.607 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7289/swagger/index.html - null null
+2026-04-29 11:08:59.988 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7289/_vs/browserLink - null null
+2026-04-29 11:08:59.988 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7289/_framework/aspnetcore-browser-refresh.js - null null
+2026-04-29 11:08:59.991 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7289/swagger/index.html - 200 null text/html;charset=utf-8 398.6555ms
+2026-04-29 11:09:00.002 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7289/_framework/aspnetcore-browser-refresh.js - 200 14953 application/javascript; charset=utf-8 14.3681ms
+2026-04-29 11:09:00.039 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7289/_vs/browserLink - 200 null text/javascript; charset=UTF-8 51.5576ms
+2026-04-29 11:09:00.065 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7289/swagger/v1/swagger.json - null null
+2026-04-29 11:09:00.086 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7289/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 21.3461ms
+2026-04-29 11:09:22.341 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7289/api/User/GetAll - null null
+2026-04-29 11:09:22.443 +05:30 [INF] Executing endpoint 'NikhilTestWebApplication.Controllers.UserController.GetAll (NikhilTestWebApplication)'
+2026-04-29 11:09:22.475 +05:30 [INF] Route matched with {action = "GetAll", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll() on controller NikhilTestWebApplication.Controllers.UserController (NikhilTestWebApplication).
+2026-04-29 11:09:23.670 +05:30 [INF] Executed DbCommand (18ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "u"."Id", "u"."Email", "u"."Password", "u"."Role", "u"."Username"
+FROM "Users" AS "u"
+2026-04-29 11:09:23.746 +05:30 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+SelectListIterator`2[[NikhilTestWebApplication.Models.User, NikhilTestWebApplication, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[NikhilTestWebApplication.Models.UserDto, NikhilTestWebApplication, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-04-29 11:09:23.771 +05:30 [INF] Executed action NikhilTestWebApplication.Controllers.UserController.GetAll (NikhilTestWebApplication) in 1293.862ms
+2026-04-29 11:09:23.775 +05:30 [INF] Executed endpoint 'NikhilTestWebApplication.Controllers.UserController.GetAll (NikhilTestWebApplication)'
+2026-04-29 11:09:23.787 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7289/api/User/GetAll - 200 null application/json; charset=utf-8 1451.0587ms
+2026-04-29 11:10:42.293 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7289/api/User/Get/f32772eb-7a98-4ef8-80ab-97b5984acd1d - null null
+2026-04-29 11:10:42.313 +05:30 [INF] Executing endpoint 'NikhilTestWebApplication.Controllers.UserController.Get (NikhilTestWebApplication)'
+2026-04-29 11:10:42.332 +05:30 [INF] Route matched with {action = "Get", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Get(System.Guid) on controller NikhilTestWebApplication.Controllers.UserController (NikhilTestWebApplication).
+2026-04-29 11:10:42.546 +05:30 [INF] Executed DbCommand (6ms) [Parameters=[@__get_Item_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT "u"."Id", "u"."Email", "u"."Password", "u"."Role", "u"."Username"
+FROM "Users" AS "u"
+WHERE "u"."Id" = @__get_Item_0
+LIMIT 1
+2026-04-29 11:10:42.551 +05:30 [INF] Executing OkObjectResult, writing value of type 'NikhilTestWebApplication.Models.UserDto'.
+2026-04-29 11:10:42.553 +05:30 [INF] Executed action NikhilTestWebApplication.Controllers.UserController.Get (NikhilTestWebApplication) in 218.1399ms
+2026-04-29 11:10:42.555 +05:30 [INF] Executed endpoint 'NikhilTestWebApplication.Controllers.UserController.Get (NikhilTestWebApplication)'
+2026-04-29 11:10:42.557 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7289/api/User/Get/f32772eb-7a98-4ef8-80ab-97b5984acd1d - 200 null application/json; charset=utf-8 266.0141ms

@@ -18,15 +18,36 @@ namespace NikhilTestWebApplication.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(await _userService.GetAll());
+            var users = await _userService.GetAll();
+
+            var response = users.Select(user => new UserDto
+            {
+                Id = user.Id,
+                Username = user.Username,
+                Email = user.Email,
+                Role = user.Role
+            });
+
+            return Ok(response);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get(Guid id)
         {
             var user = await _userService.GetById(id);
-            if (user == null) return NotFound();
-            return Ok(user);
+
+            if (user == null)
+                return NotFound();
+
+            var response = new UserDto
+            {
+                Id = user.Id,
+                Username = user.Username,
+                Email = user.Email,
+                Role = user.Role
+            };
+
+            return Ok(response);
         }
 
         [HttpPost]
@@ -43,7 +64,15 @@ namespace NikhilTestWebApplication.Controllers
 
             var created = await _userService.Add(user);
 
-            return Ok(created);
+            var response = new UserDto
+            {
+                Id = created.Id,
+                Username = created.Username,
+                Email = created.Email,
+                Role = created.Role 
+            };
+
+            return Ok(response);
         }
 
         [HttpPut("{id}")]

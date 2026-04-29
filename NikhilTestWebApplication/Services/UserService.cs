@@ -21,7 +21,7 @@ namespace NikhilTestWebApplication.Services
             return await _context.Users.ToListAsync();
         }
 
-        public async Task<User?> GetById(int id)
+        public async Task<User?> GetById(Guid id)
         {
             return await _context.Users.FindAsync(id);
         }
