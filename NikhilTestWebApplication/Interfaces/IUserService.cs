@@ -7,7 +7,7 @@ namespace NikhilTestWebApplication.Interfaces
         Task<IEnumerable<User>> GetAll();
         Task<User?> GetById(Guid id);
         Task<User> Add(User user);
-        Task<User?> Update(int id, User user);
+        Task<User?> Update(User user);
         Task<bool> Delete(int id);
 
         Task<UploadFileModel> UploadFile(UploadFile uploadFile);

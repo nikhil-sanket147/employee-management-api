@@ -256,12 +256,12 @@
     "Parameters": [
       {
         "Name": "id",
-        "Type": "System.Int32",
+        "Type": "System.Guid",
         "IsRequired": true
       },
       {
-        "Name": "user",
-        "Type": "NikhilTestWebApplication.Models.User",
+        "Name": "request",
+        "Type": "NikhilTestWebApplication.Models.UpdateUserRequestDto",
         "IsRequired": true
       }
     ],

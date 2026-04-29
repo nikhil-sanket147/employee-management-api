@@ -33,14 +33,15 @@ namespace NikhilTestWebApplication.Services
             return user;
         }
 
-        public async Task<User?> Update(int id, User user)
+        public async Task<User?> Update(User user)
         {
-            var existing = await _context.Users.FindAsync(id);
+            var existing = await _context.Users.FindAsync(user.Id);
             if (existing == null) return null;
 
             existing.Username = user.Username;
             existing.Email = user.Email;
             existing.Password = user.Password;
+            existing.Role = user.Role;
 
             await _context.SaveChangesAsync();
             return existing;

@@ -76,11 +76,24 @@ namespace NikhilTestWebApplication.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, User user)
+        public async Task<IActionResult> Update(Guid id, UpdateUserRequestDto request)
         {
-            var updated = await _userService.Update(id, user);
-            if (updated == null) return NotFound();
-            return Ok(updated);
+            var user = await _userService.GetById(id);
+            
+            if(user == null) return NotFound();
+
+            if (request.Username != null)
+                user.Username = request.Username;
+
+            if (request.Email != null)
+                user.Email = request.Email;
+
+            if (request.Role != null)
+                user.Role = request.Role;
+
+            await _userService.Update(user);
+
+            return Ok(user);
         }
 
         [HttpDelete("{id}")]
