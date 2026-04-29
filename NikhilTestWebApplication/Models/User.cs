@@ -1,4 +1,4 @@
-﻿namespace NikhilTestWebApplication.Models
+﻿    namespace NikhilTestWebApplication.Models
 {
     public class User
     {

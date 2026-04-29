@@ -415,7 +415,7 @@
         }
       }
     },
-    "/api/User/RestoreUser/{id}/restore": {
+    "/api/User/RestoreUser/{id}": {
       "put": {
         "tags": [
           "User"
@@ -449,10 +449,6 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "uId": {
-                    "type": "string",
-                    "format": "uuid"
-                  },
                   "File": {
                     "type": "string",
                     "format": "binary"
@@ -460,9 +456,6 @@
                 }
               },
               "encoding": {
-                "uId": {
-                  "style": "form"
-                },
                 "File": {
                   "style": "form"
                 }

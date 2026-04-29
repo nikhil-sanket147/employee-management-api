@@ -95,14 +95,42 @@ namespace NikhilTestWebApplication.Services
 
                 var file = uploadFile.File;
 
+                // ================================
+                // Validate File Type
+                // ================================
+
+                var allowedExtensions = new[] { ".xlsx" };
+                var extension = Path.GetExtension(file.FileName).ToLower();
+
+                if (!allowedExtensions.Contains(extension))
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Only .xlsx files are allowed";
+                    return response;
+                }
+
+                // ================================
+                // Validate File Size (5MB)
+                // ================================
+
+                if (file.Length > 5 * 1024 * 1024)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "File size exceeds 5MB";
+                    return response;
+                }
+
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
-                var emailList = new List<string>();
-                var invalidEmails = new List<string>();
+                var userToInsert = new List<User>();
+                var invalidRows = new List<int>();
+
+                using var transaction = await _context.Database.BeginTransactionAsync();
 
                 using (var stream = new MemoryStream())
                 {
                     await file.CopyToAsync(stream);
+                    stream.Position = 0;
 
                     using (var package = new ExcelPackage(stream))
                     {
@@ -118,67 +146,130 @@ namespace NikhilTestWebApplication.Services
                         int rowCount = worksheet.Dimension.Rows;
 
                         // ================================
-                        // STEP 1 — Validate Header HERE
+                        // Validate Headers
                         // ================================
 
-                        var header = worksheet.Cells[1, 1].Text;
+                        var usernameheader = worksheet.Cells[1, 1].Text.Trim();
+                        var emailheader = worksheet.Cells[1, 2].Text.Trim();
+                        var passwordheader = worksheet.Cells[1, 3].Text.Trim();
+                        var roleheader = worksheet.Cells[1, 4].Text.Trim();
 
-                        if (header != "Official Email Address")
+                        if (usernameheader != "Username" ||
+                            emailheader != "Email" ||
+                            passwordheader != "Password" ||
+                            roleheader != "Role")
                         {
                             response.IsSuccess = false;
                             response.Message =
-                                "Invalid column header. Expected 'Official Email Address'";
+                                "Invalid Excel format. Expected columns: Username, Email, Password, Role";
+
                             return response;
                         }
 
                         // ================================
-                        // STEP 2 — Read Emails HERE
+                        // Load existing emails once
+                        // ================================
+
+                        var existingEmails = await _context.Users
+                            .Select(u => u.Email.ToLower())
+                            .ToListAsync();
+
+                        var excelEmails = new HashSet<string>();
+
+                        // ================================
+                        // Read Rows
                         // ================================
 
                         for (int row = 2; row <= rowCount; row++)
                         {
-                            var email = worksheet.Cells[row, 1].Text;
+                            var username = worksheet.Cells[row, 1].Text.Trim();
+                            var email = worksheet.Cells[row, 2].Text.Trim().ToLower();
+                            var password = worksheet.Cells[row, 3].Text.Trim();
+                            var role = worksheet.Cells[row, 4].Text.Trim();
 
-                            if (string.IsNullOrWhiteSpace(email))
-                                continue;
-
-                            // ================================
-                            // STEP 3 — Validate Email HERE
-                            // ================================
-
-                            if (!IsValidEmail(email))
+                            if (string.IsNullOrWhiteSpace(username) ||
+                                string.IsNullOrWhiteSpace(email) ||
+                                string.IsNullOrWhiteSpace(password))
                             {
-                                invalidEmails.Add(email);
+                                invalidRows.Add(row);
                                 continue;
                             }
 
-                            emailList.Add(email);
+                            if (!IsValidEmail(email))
+                            {
+                                invalidRows.Add(row);
+                                continue;
+                            }
+
+                            // Check duplicate in DB
+
+                            if (existingEmails.Contains(email))
+                            {
+                                invalidRows.Add(row);
+                                continue;
+                            }
+
+                            // Check duplicate in Excel
+
+                            if (!excelEmails.Add(email))
+                            {
+                                invalidRows.Add(row);
+                                continue;
+                            }
+
+                            var user = new User
+                            {
+                                Id = Guid.NewGuid(),
+                                Username = username,
+                                Email = email,
+
+                                // Password hashing
+                                Password = BCrypt.Net.BCrypt.HashPassword(password),
+
+                                Role = string.IsNullOrWhiteSpace(role)
+                                    ? "User"
+                                    : role,
+
+                                IsActive = true,
+                                IsArchieved = false
+                            };
+
+                            userToInsert.Add(user);
                         }
 
                         // ================================
-                        // STEP 4 — Remove Duplicates HERE
+                        // Bulk Insert
                         // ================================
 
-                        emailList = emailList.Distinct().ToList();
+                        if (userToInsert.Any())
+                        {
+                            await _context.Users.AddRangeAsync(userToInsert);
+                            await _context.SaveChangesAsync();
+                        }
+
+                        await transaction.CommitAsync();
 
                         // ================================
-                        // STEP 5 — Set Response HERE
+                        // Response
                         // ================================
 
                         response.IsSuccess = true;
                         response.FileName = file.FileName;
                         response.UploadedOn = DateTime.Now;
+
                         response.Message =
                             $"Total Rows: {rowCount - 1}, " +
-                            $"Valid Emails: {emailList.Count}, " +
-                            $"Invalid Emails: {invalidEmails.Count}";
+                            $"Inserted Users: {userToInsert.Count}, " +
+                            $"Invalid Rows: {string.Join(", ", invalidRows)}";
                     }
                 }
             }
             catch (Exception ex)
             {
                 response.IsSuccess = false;
-                response.Message = ex.Message;
+
+                response.Message =
+                    ex.InnerException?.Message ?? ex.Message;
             }
 
             return response;

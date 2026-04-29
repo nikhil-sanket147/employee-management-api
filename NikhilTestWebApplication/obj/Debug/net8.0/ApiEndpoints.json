@@ -249,7 +249,7 @@
   {
     "ContainingType": "NikhilTestWebApplication.Controllers.UserController",
     "Method": "RestoreUser",
-    "RelativePath": "api/User/RestoreUser/{id}/restore",
+    "RelativePath": "api/User/RestoreUser/{id}",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
@@ -291,11 +291,6 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [
-      {
-        "Name": "uId",
-        "Type": "System.Guid",
-        "IsRequired": false
-      },
       {
         "Name": "File",
         "Type": "Microsoft.AspNetCore.Http.IFormFile",
