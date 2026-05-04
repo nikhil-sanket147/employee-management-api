@@ -97,10 +97,7 @@ namespace NikhilTestWebApplication.Services
 
                 var file = uploadFile.File;
 
-                // ================================
-                // Validate File Type
-                // ================================
-
+                // File validation
                 var allowedExtensions = new[] { ".xlsx" };
                 var extension = Path.GetExtension(file.FileName).ToLower();
 
@@ -111,21 +108,13 @@ namespace NikhilTestWebApplication.Services
                     return response;
                 }
 
-                // ================================
-                // Validate File Size (5MB)
-                // ================================
-
-                if (file.Length > 5 * 1024 * 1024)
-                {
-                    response.IsSuccess = false;
-                    response.Message = "File size exceeds 5MB";
-                    return response;
-                }
-
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
-                var userToInsert = new List<User>();
+                var usersToInsert = new List<User>();
                 var invalidRows = new List<int>();
+
+                int inserted = 0;
+                int updated = 0;
 
                 using var transaction = await _context.Database.BeginTransactionAsync();
 
@@ -147,40 +136,22 @@ namespace NikhilTestWebApplication.Services
 
                         int rowCount = worksheet.Dimension.Rows;
 
-                        // ================================
-                        // Validate Headers
-                        // ================================
-
-                        var usernameheader = worksheet.Cells[1, 1].Text.Trim();
-                        var emailheader = worksheet.Cells[1, 2].Text.Trim();
-                        var passwordheader = worksheet.Cells[1, 3].Text.Trim();
-                        var roleheader = worksheet.Cells[1, 4].Text.Trim();
-
-                        if (usernameheader != "Username" ||
-                            emailheader != "Email" ||
-                            passwordheader != "Password" ||
-                            roleheader != "Role")
+                        // Header validation
+                        if (worksheet.Cells[1, 1].Text != "Username" ||
+                            worksheet.Cells[1, 2].Text != "Email" ||
+                            worksheet.Cells[1, 3].Text != "Password" ||
+                            worksheet.Cells[1, 4].Text != "Role")
                         {
                             response.IsSuccess = false;
-                            response.Message =
-                                "Invalid Excel format. Expected columns: Username, Email, Password, Role";
-
+                            response.Message = "Invalid Excel format";
                             return response;
                         }
 
-                        // ================================
-                        // Load existing emails once
-                        // ================================
-
-                        var existingEmails = await _context.Users
-                            .Select(u => u.Email.ToLower())
-                            .ToListAsync();
+                        // Load existing users into memory
+                        var existingUsers = await _context.Users
+                            .ToDictionaryAsync(u => u.Email.ToLower());
 
                         var excelEmails = new HashSet<string>();
-
-                        // ================================
-                        // Read Rows
-                        // ================================
 
                         for (int row = 2; row <= rowCount; row++)
                         {
@@ -190,8 +161,7 @@ namespace NikhilTestWebApplication.Services
                             var role = worksheet.Cells[row, 4].Text.Trim();
 
                             if (string.IsNullOrWhiteSpace(username) ||
-                                string.IsNullOrWhiteSpace(email) ||
-                                string.IsNullOrWhiteSpace(password))
+                                string.IsNullOrWhiteSpace(email))
                             {
                                 invalidRows.Add(row);
                                 continue;
@@ -203,57 +173,73 @@ namespace NikhilTestWebApplication.Services
                                 continue;
                             }
 
-                            // Check duplicate in DB
-
-                            if (existingEmails.Contains(email))
-                            {
-                                invalidRows.Add(row);
-                                continue;
-                            }
-
-                            // Check duplicate in Excel
-
+                            // prevent duplicate inside excel
                             if (!excelEmails.Add(email))
                             {
                                 invalidRows.Add(row);
                                 continue;
                             }
 
-                            var user = new User
+                            // ================================
+                            // MERGE LOGIC
+                            // ================================
+
+                            if (existingUsers.TryGetValue(email, out var existingUser))
                             {
-                                Id = Guid.NewGuid(),
-                                Username = username,
-                                Email = email,
+                                // UPDATE
 
-                                // Password hashing
-                                Password = BCrypt.Net.BCrypt.HashPassword(password),
+                                existingUser.Username = username;
 
-                                Role = string.IsNullOrWhiteSpace(role)
-                                    ? "User"
-                                    : role,
+                                if (!string.IsNullOrWhiteSpace(password))
+                                {
+                                    existingUser.Password =
+                                        BCrypt.Net.BCrypt.HashPassword(password);
+                                }
 
-                                IsActive = true,
-                                IsArchieved = false
-                            };
+                                if (!string.IsNullOrWhiteSpace(role))
+                                {
+                                    existingUser.Role = role;
+                                }
 
-                            userToInsert.Add(user);
+                                existingUser.IsActive = true;
+                                existingUser.IsArchieved = false;
+
+                                updated++;
+                            }
+                            else
+                            {
+                                // INSERT
+
+                                if (string.IsNullOrWhiteSpace(password))
+                                {
+                                    invalidRows.Add(row);
+                                    continue;
+                                }
+
+                                var newUser = new User
+                                {
+                                    Id = Guid.NewGuid(),
+                                    Username = username,
+                                    Email = email,
+                                    Password = BCrypt.Net.BCrypt.HashPassword(password),
+                                    Role = string.IsNullOrWhiteSpace(role) ? "User" : role,
+                                    IsActive = true,
+                                    IsArchieved = false
+                                };
+
+                                usersToInsert.Add(newUser);
+                                inserted++;
+                            }
                         }
 
-                        // ================================
-                        // Bulk Insert
-                        // ================================
-
-                        if (userToInsert.Any())
+                        // Bulk insert
+                        if (usersToInsert.Any())
                         {
-                            await _context.Users.AddRangeAsync(userToInsert);
-                            await _context.SaveChangesAsync();
+                            await _context.Users.AddRangeAsync(usersToInsert);
                         }
 
+                        await _context.SaveChangesAsync();
                         await transaction.CommitAsync();
-
-                        // ================================
-                        // Response
-                        // ================================
 
                         response.IsSuccess = true;
                         response.FileName = file.FileName;
@@ -261,7 +247,8 @@ namespace NikhilTestWebApplication.Services
 
                         response.Message =
                             $"Total Rows: {rowCount - 1}, " +
-                            $"Inserted Users: {userToInsert.Count}, " +
+                            $"Inserted: {inserted}, " +
+                            $"Updated: {updated}, " +
                             $"Invalid Rows: {string.Join(", ", invalidRows)}";
                     }
                 }
@@ -269,9 +256,7 @@ namespace NikhilTestWebApplication.Services
             catch (Exception ex)
             {
                 response.IsSuccess = false;
-
-                response.Message =
-                    ex.InnerException?.Message ?? ex.Message;
+                response.Message = ex.InnerException?.Message ?? ex.Message;
             }
 
             return response;
