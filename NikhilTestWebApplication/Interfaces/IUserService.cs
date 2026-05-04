@@ -15,5 +15,7 @@ namespace NikhilTestWebApplication.Interfaces
         Task<UploadFileModel> UploadFile(UploadFile uploadFile);
 
         Task<PagedResponse<List<User>>> GetUsersAsync(PaginationParams pagination);
+
+        Task<byte[]> ExportUsers();
     }
 }

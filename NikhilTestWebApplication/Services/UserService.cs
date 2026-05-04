@@ -5,6 +5,8 @@ using NikhilTestWebApplication.Data;
 using NikhilTestWebApplication.Interfaces;
 using NikhilTestWebApplication.Models;
 using OfficeOpenXml;
+using OfficeOpenXml.Style;
+using System.Drawing;
 using System.Text.RegularExpressions;
 
 namespace NikhilTestWebApplication.Services
@@ -299,6 +301,45 @@ namespace NikhilTestWebApplication.Services
 
             return new PagedResponse<List<User>>(
                     users,pagination.PageNumber, pagination.PageSize, totalRecords);
+        }
+
+        public async Task<byte[]> ExportUsers ()
+        {
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            var users = await _context.Users.Where(u => u.IsActive).ToListAsync();
+
+            using var package = new ExcelPackage();
+
+            var worksheet = package.Workbook.Worksheets.Add("Users");
+
+            //header
+            worksheet.Cells[1,1].Value = "Username";
+            worksheet.Cells[1,2].Value = "Email";
+            worksheet.Cells[1,3].Value = "Role";
+
+            using (var range = worksheet.Cells[1,1,1,3])
+            {
+                range.Style.Font.Bold = true;
+            }
+
+            //data
+            int row = 2;
+
+            foreach(var user in users)
+            {
+                worksheet.Cells[row, 1].Value = user.Username;
+                worksheet.Cells[row, 2].Value = user.Email;
+                worksheet.Cells[row, 3].Value = user.Role;
+                worksheet.Cells[1, 1, 1, 3].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells[1, 1, 1, 3].Style.Fill.BackgroundColor.SetColor(Color.LightGray);
+
+                row++;
+            }
+
+            worksheet.Cells.AutoFitColumns();
+
+            return package.GetAsByteArray();
         }
     }
 }

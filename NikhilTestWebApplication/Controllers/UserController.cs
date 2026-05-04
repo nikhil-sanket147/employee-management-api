@@ -133,5 +133,17 @@ namespace NikhilTestWebApplication.Controllers
             var result = await _userService.GetUsersAsync(pagination);
             return Ok(result);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ExportUsers()
+        {
+            var fileBytes = await _userService.ExportUsers();
+
+            return File(
+                fileBytes,
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                $"Users_{DateTime.Now:yyyyMMddHHmmss}.xlsx"
+            );
+        }
     }
 }
