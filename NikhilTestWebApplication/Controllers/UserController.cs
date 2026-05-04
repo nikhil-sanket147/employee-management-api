@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using NikhilTestWebApplication.Interfaces;
 using NikhilTestWebApplication.Models;
@@ -11,8 +11,11 @@ namespace NikhilTestWebApplication.Controllers
     {
         private readonly IUserService _userService;
 
-        public UserController(IUserService userService)
+        private readonly IMapper _mapper;
+
+        public UserController(IMapper mapper ,IUserService userService)
         {
+            _mapper = mapper;
             _userService = userService;
         }
 
@@ -21,13 +24,16 @@ namespace NikhilTestWebApplication.Controllers
         {
             var users = await _userService.GetAll();
 
-            var response = users.Select(user => new UserDto
-            {
-                Id = user.Id,
-                Username = user.Username,
-                Email = user.Email,
-                Role = user.Role
-            });
+            //using AutoMapper
+            var response = _mapper.Map<IEnumerable<UserDto>>(users);
+
+            //var response = users.Select(user => new UserDto
+            //{
+            //    Id = user.Id,
+            //    Username = user.Username,
+            //    Email = user.Email,
+            //    Role = user.Role
+            //});
 
             return Ok(response);
         }
@@ -52,55 +58,86 @@ namespace NikhilTestWebApplication.Controllers
         }
 
         [HttpPost]
+        //public async Task<IActionResult> Add(CreateUserRequest request)
+        //{
+        //    var user = new User
+        //    {
+        //        Id = Guid.NewGuid(),
+        //        Username = request.Username,
+        //        Email = request.Email,
+        //        Password = request.Password,
+        //        Role = request.Role
+        //    };
+
+        //    var created = await _userService.Add(user);
+
+        //    var response = new UserDto
+        //    {
+        //        Id = created.Id,
+        //        Username = created.Username,
+        //        Email = created.Email,
+        //        Role = created.Role 
+        //    };
+
+        //    return Ok(response);
+        //}
+
+        //Add using automapper
         public async Task<IActionResult> Add(CreateUserRequest request)
         {
-            var user = new User
-            {
-                Id = Guid.NewGuid(),
-                Username = request.Username,
-                Email = request.Email,
-                Password = request.Password,
-                Role = request.Role
-            };
+            var user = _mapper.Map<User>(request);
+
+            user.Id = Guid.NewGuid();
 
             var created = await _userService.Add(user);
 
-            var response = new UserDto
-            {
-                Id = created.Id,
-                Username = created.Username,
-                Email = created.Email,
-                Role = created.Role 
-            };
+            var response = _mapper.Map<UserDto>(created);
 
             return Ok(response);
         }
 
         [HttpPut("{id}")]
+        //public async Task<IActionResult> Update(Guid id, UpdateUserRequestDto request)
+        //{
+        //    var user = await _userService.GetById(id);
+            
+        //    if(user == null) return NotFound();
+
+        //    if (request.Username != null)
+        //        user.Username = request.Username;
+
+        //    if (request.Email != null)
+        //        user.Email = request.Email;
+
+        //    if (request.Role != null)
+        //        user.Role = request.Role;
+
+        //    var updated = await _userService.Update(user);
+
+        //    var response = new UserDto
+        //    {
+        //        Id = updated.Id,
+        //        Username = updated.Username,
+        //        Email = updated.Email,
+        //        Role = updated.Role
+        //    };
+
+        //    return Ok(response);
+        //}
+
+
+        //update using automapper
         public async Task<IActionResult> Update(Guid id, UpdateUserRequestDto request)
         {
             var user = await _userService.GetById(id);
-            
+
             if(user == null) return NotFound();
 
-            if (request.Username != null)
-                user.Username = request.Username;
-
-            if (request.Email != null)
-                user.Email = request.Email;
-
-            if (request.Role != null)
-                user.Role = request.Role;
+            _mapper.Map(request, user);
 
             var updated = await _userService.Update(user);
 
-            var response = new UserDto
-            {
-                Id = updated.Id,
-                Username = updated.Username,
-                Email = updated.Email,
-                Role = updated.Role
-            };
+            var response = _mapper.Map<UserDto>(updated);
 
             return Ok(response);
         }

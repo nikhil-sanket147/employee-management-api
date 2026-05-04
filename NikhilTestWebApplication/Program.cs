@@ -12,6 +12,7 @@ using NikhilTestWebApplication.Models;
 using NikhilTestWebApplication.Services;
 using NikhilTestWebApplication.Validators;
 using System.Text;
+using NikhilTestWebApplication.Mappings;
 
 //serilog
 Log.Logger = new LoggerConfiguration().WriteTo.Console().WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day).CreateLogger();
@@ -26,6 +27,7 @@ builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<RegisterUserValidator>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAutoMapper(typeof(UserProfile));
 
 //validation
 builder.Services.Configure<ApiBehaviorOptions>(options =>

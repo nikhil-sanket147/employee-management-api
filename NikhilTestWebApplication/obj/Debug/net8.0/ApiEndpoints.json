@@ -196,6 +196,16 @@
   },
   {
     "ContainingType": "NikhilTestWebApplication.Controllers.UserController",
+    "Method": "ExportUsers",
+    "RelativePath": "api/User/ExportUsers",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "NikhilTestWebApplication.Controllers.UserController",
     "Method": "Get",
     "RelativePath": "api/User/Get/{id}",
     "HttpMethod": "GET",
