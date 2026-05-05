@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Hangfire;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using NikhilTestWebApplication.Interfaces;
 using NikhilTestWebApplication.Models;
 
@@ -20,6 +21,7 @@ namespace NikhilTestWebApplication.Controllers
             _userService = userService;
         }
 
+        [EnableRateLimiting("fixed")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {

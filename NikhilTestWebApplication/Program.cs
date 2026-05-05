@@ -15,6 +15,8 @@ using System.Text;
 using NikhilTestWebApplication.Mappings;
 using Hangfire;
 using Hangfire.MemoryStorage;
+using Microsoft.AspNetCore.RateLimiting;
+using System.Threading.RateLimiting;
 
 //serilog
 Log.Logger = new LoggerConfiguration().WriteTo.Console().WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day).CreateLogger();
@@ -53,6 +55,26 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
         };
 
         return new BadRequestObjectResult(response);
+    };
+});
+
+//rate limiting
+builder.Services.AddRateLimiter(options =>
+{
+    options.AddFixedWindowLimiter("fixed", opt =>
+    {
+        opt.PermitLimit = 3;
+        opt.Window = TimeSpan.FromSeconds(10);
+    });
+
+    options.OnRejected = async (context, token) =>
+    {
+        context.HttpContext.Response.StatusCode = 429;
+        await context.HttpContext.Response.WriteAsJsonAsync(new
+        {
+            success = false,
+            message = "Too many requests. Please try again later."
+        },token);
     };
 });
 
@@ -120,11 +142,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseMiddleware<ExceptionMiddleware>();
+app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.UseHangfireDashboard();
-
 app.MapControllers();
 
 app.Run();
