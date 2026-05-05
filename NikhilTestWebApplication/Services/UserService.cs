@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using NikhilTestWebApplication.Data;
 using NikhilTestWebApplication.Interfaces;
 using NikhilTestWebApplication.Models;
@@ -15,16 +16,41 @@ namespace NikhilTestWebApplication.Services
     {
         private readonly ApplicationDbContext _context;
 
-        public UserService(ApplicationDbContext context)
+        private readonly IMemoryCache _cache;
+
+        public UserService(ApplicationDbContext context, IMemoryCache cache)
         {
             _context = context;
+            _cache = cache;
         }
 
+        //public async Task<IEnumerable<User>> GetAll()
+        //{
+        //    return await _context.Users.Where(u => u.IsActive).ToListAsync();
+        //}
+
+
+
+        //get all users using cache
         public async Task<IEnumerable<User>> GetAll()
         {
-            return await _context.Users.Where(u => u.IsActive).ToListAsync();
-        }
+            const string cacheKey = "users_list";
 
+            if (!_cache.TryGetValue(cacheKey, out List<User>? users) || users == null)
+            {
+                users = await _context.Users
+                    .Where(u => u.IsActive)
+                    .ToListAsync();
+
+                _cache.Set(cacheKey, users, new MemoryCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5),
+                    SlidingExpiration = TimeSpan.FromMinutes(2)
+                });
+            }
+
+            return users;
+        }
         public async Task<User?> GetById(Guid id)
         {
             return await _context.Users.Where(u => u.Id == id && u.IsActive).FirstOrDefaultAsync();
@@ -267,6 +293,62 @@ namespace NikhilTestWebApplication.Services
                 @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
 
             return Regex.IsMatch(email, pattern);
+        }
+
+        public async Task ProcessFileAsync(string filePath)
+        {
+            try
+            {
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+                using (var package = new ExcelPackage(new FileInfo(filePath)))
+                {
+                    var worksheet = package.Workbook.Worksheets[0];
+
+                    if (worksheet.Dimension == null) return;
+
+                    int rowCount = worksheet.Dimension.Rows;
+
+                    var usersToInsert = new List<User>();
+
+                    for (int row = 2; row <= rowCount; row++)
+                    {
+                        var username = worksheet.Cells[row, 1].Text;
+                        var email = worksheet.Cells[row, 2].Text;
+                        var password = worksheet.Cells[row, 3].Text;
+                        var role = worksheet.Cells[row, 4].Text;
+
+                        if (string.IsNullOrWhiteSpace(email)) continue;
+
+                        var exists = await _context.Users.AnyAsync(u => u.Email == email);
+
+                        if (exists) continue;
+
+                        usersToInsert.Add(new User
+                        {
+                            Id = Guid.NewGuid(),
+                            Username = username,
+                            Email = email,
+                            Password = password,
+                            Role = string.IsNullOrWhiteSpace(role) ? "User" : role,
+                            IsActive = true,
+                            IsArchieved = false
+                        });
+                    }
+
+                    if(usersToInsert.Any())
+                    {
+                        await _context.Users.AddRangeAsync(usersToInsert);
+                        await _context.SaveChangesAsync();
+                    }
+                }
+
+                File.Delete(filePath);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         public async Task<PagedResponse<List<User>>> GetUsersAsync(PaginationParams pagination)

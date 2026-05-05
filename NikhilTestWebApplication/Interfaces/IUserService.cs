@@ -12,6 +12,8 @@ namespace NikhilTestWebApplication.Interfaces
 
         Task<bool> RestoreUser(Guid id);
 
+        Task ProcessFileAsync(string filePath);
+
         Task<UploadFileModel> UploadFile(UploadFile uploadFile);
 
         Task<PagedResponse<List<User>>> GetUsersAsync(PaginationParams pagination);

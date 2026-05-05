@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Hangfire;
 using Microsoft.AspNetCore.Mvc;
 using NikhilTestWebApplication.Interfaces;
 using NikhilTestWebApplication.Models;
@@ -158,10 +159,35 @@ namespace NikhilTestWebApplication.Controllers
         }
 
         [HttpPost]
-        public async Task<UploadFileModel> UploadFile([FromForm] UploadFile uploadFile)
+        //public async Task<UploadFileModel> UploadFile([FromForm] UploadFile uploadFile)
+        //{
+        //    var response = await _userService.UploadFile(uploadFile);
+        //    return response;
+        //}
+
+        //upload file using hangfire
+
+        public async Task<IActionResult> UploadFile([FromForm] UploadFile uploadFile)
         {
-            var response = await _userService.UploadFile(uploadFile);
-            return response;
+            if(uploadFile?.File == null) return BadRequest("No file uploaded");
+
+            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
+
+            if(!Directory.Exists(uploadsFolder)) Directory.CreateDirectory(uploadsFolder);
+
+            var filePath = Path.Combine(uploadsFolder, Guid.NewGuid() + Path.GetExtension(uploadFile.File.FileName));
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await uploadFile.File.CopyToAsync(stream);
+            }
+
+            BackgroundJob.Enqueue<IUserService>(x => x.ProcessFileAsync(filePath));
+
+            return Ok(new
+            {
+                message = "File uploaded. Processing in background."
+            });
         }
 
         [HttpGet]
