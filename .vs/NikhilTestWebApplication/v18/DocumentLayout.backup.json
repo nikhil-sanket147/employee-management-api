@@ -3,10 +3,6 @@
   "WorkspaceRootPath": "C:\\Users\\nikhil.mhaske\\Documents\\employee-management-api\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\nikhil.mhaske\\Documents\\employee-management-api\\NikhilTestWebApplication\\Migrations\\20260427104100_AddUserRole.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:NikhilTestWebApplication\\Migrations\\20260427104100_AddUserRole.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{05DBC1DD-BB68-4AEB-B239-C21EDEF90416}|NikhilTestWebApplication\\NikhilTestWebApplication.csproj|c:\\users\\nikhil.mhaske\\documents\\employee-management-api\\nikhiltestwebapplication\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{05DBC1DD-BB68-4AEB-B239-C21EDEF90416}|NikhilTestWebApplication\\NikhilTestWebApplication.csproj|solutionrelative:nikhiltestwebapplication\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -42,37 +38,24 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "20260427104100_AddUserRole.cs",
-              "DocumentMoniker": "C:\\Users\\nikhil.mhaske\\Documents\\employee-management-api\\NikhilTestWebApplication\\Migrations\\20260427104100_AddUserRole.cs",
-              "RelativeDocumentMoniker": "NikhilTestWebApplication\\Migrations\\20260427104100_AddUserRole.cs",
-              "ToolTip": "C:\\Users\\nikhil.mhaske\\Documents\\employee-management-api\\NikhilTestWebApplication\\Migrations\\20260427104100_AddUserRole.cs",
-              "RelativeToolTip": "NikhilTestWebApplication\\Migrations\\20260427104100_AddUserRole.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-27T10:41:00.708Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "ProductService.cs",
               "DocumentMoniker": "C:\\Users\\nikhil.mhaske\\Documents\\employee-management-api\\NikhilTestWebApplication\\Services\\ProductService.cs",
               "RelativeDocumentMoniker": "NikhilTestWebApplication\\Services\\ProductService.cs",
               "ToolTip": "C:\\Users\\nikhil.mhaske\\Documents\\employee-management-api\\NikhilTestWebApplication\\Services\\ProductService.cs",
               "RelativeToolTip": "NikhilTestWebApplication\\Services\\ProductService.cs",
-              "ViewState": "AgIAACkAAAAAAAAAAAAqwDUAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADUAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-27T10:37:30.132Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "Product.cs",
               "DocumentMoniker": "C:\\Users\\nikhil.mhaske\\Documents\\employee-management-api\\NikhilTestWebApplication\\Models\\Product.cs",
               "RelativeDocumentMoniker": "NikhilTestWebApplication\\Models\\Product.cs",
@@ -80,12 +63,11 @@
               "RelativeToolTip": "NikhilTestWebApplication\\Models\\Product.cs",
               "ViewState": "AgIAAAYAAAAAAAAAAAAAAAsAAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-27T10:31:50.837Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-27T10:31:50.837Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 3,
               "Title": "AuthController.cs",
               "DocumentMoniker": "C:\\Users\\nikhil.mhaske\\Documents\\employee-management-api\\NikhilTestWebApplication\\Controllers\\AuthController.cs",
               "RelativeDocumentMoniker": "NikhilTestWebApplication\\Controllers\\AuthController.cs",
@@ -93,12 +75,11 @@
               "RelativeToolTip": "NikhilTestWebApplication\\Controllers\\AuthController.cs",
               "ViewState": "AgIAAAsAAAAAAAAAAAAAwAsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-27T10:21:30.273Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-27T10:21:30.273Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 4,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\nikhil.mhaske\\Documents\\employee-management-api\\NikhilTestWebApplication\\Program.cs",
               "RelativeDocumentMoniker": "NikhilTestWebApplication\\Program.cs",
@@ -106,12 +87,11 @@
               "RelativeToolTip": "NikhilTestWebApplication\\Program.cs",
               "ViewState": "AgIAACoAAAAAAAAAAAAAAEsAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-27T10:20:22.08Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-27T10:20:22.08Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "AuthService.cs",
               "DocumentMoniker": "C:\\Users\\nikhil.mhaske\\Documents\\employee-management-api\\NikhilTestWebApplication\\Services\\AuthService.cs",
               "RelativeDocumentMoniker": "NikhilTestWebApplication\\Services\\AuthService.cs",
@@ -119,12 +99,11 @@
               "RelativeToolTip": "NikhilTestWebApplication\\Services\\AuthService.cs",
               "ViewState": "AgIAAAcAAAAAAAAAAADgvwsAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-27T10:03:47.772Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-27T10:03:47.772Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 6,
               "Title": "IAuthService.cs",
               "DocumentMoniker": "C:\\Users\\nikhil.mhaske\\Documents\\employee-management-api\\NikhilTestWebApplication\\Interfaces\\IAuthService.cs",
               "RelativeDocumentMoniker": "NikhilTestWebApplication\\Interfaces\\IAuthService.cs",
@@ -132,12 +111,11 @@
               "RelativeToolTip": "NikhilTestWebApplication\\Interfaces\\IAuthService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-27T10:02:26.173Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-27T10:02:26.173Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 5,
               "Title": "LoginRequest.cs",
               "DocumentMoniker": "C:\\Users\\nikhil.mhaske\\Documents\\employee-management-api\\NikhilTestWebApplication\\Models\\LoginRequest.cs",
               "RelativeDocumentMoniker": "NikhilTestWebApplication\\Models\\LoginRequest.cs",
@@ -145,8 +123,7 @@
               "RelativeToolTip": "NikhilTestWebApplication\\Models\\LoginRequest.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-27T09:58:53.85Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-27T09:58:53.85Z"
             }
           ]
         }

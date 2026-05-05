@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NikhilTestWebApplication")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3992814da53079db276473fac405df3ef50cbd7a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fc58bf2f6a3d73ed890db94b355d6d4b003f25d5")]
 [assembly: System.Reflection.AssemblyProductAttribute("NikhilTestWebApplication")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NikhilTestWebApplication")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
