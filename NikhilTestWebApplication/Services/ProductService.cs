@@ -21,23 +21,34 @@ namespace NikhilTestWebApplication.Services
 
         public async Task<List<Product>> GetAllProducts()
         {
-            // 🔥 Microservice call
-            var user = await _userClient.GetUserById(1);
+            var products = await _context.Products.ToListAsync();
 
-            return await _context.Products.ToListAsync();
+            foreach (var product in products)
+            {
+                try
+                {
+                    var user = await _userClient
+                        .GetUserById(product.UserId);
+
+                    product.UserName = user?.Username;
+                }
+                catch
+                {
+                    product.UserName = null;
+                }
+            }
+
+            return products;
         }
 
-        public async Task<Product?> GetProductById(int id)
+        public async Task<Product?> GetProductById(Guid id)
         {
             var product = await _context.Products
-                .FirstOrDefaultAsync(x => x.UserId == id);
+                .FirstOrDefaultAsync(x => x.Id == id);
 
             if (product == null)
                 return null;
 
-            // 🔥 Call User microservice
-            if (product.UserId > 0)
-            {
                 try
                 {
                     var user = await _userClient.GetUserById(product.UserId);
@@ -48,13 +59,13 @@ namespace NikhilTestWebApplication.Services
                     // Fail-safe: product should still return
                     product.UserName = null;
                 }
-            }
 
             return product;
         }
 
         public async Task AddProduct(Product product)
         {
+            product.User = null;
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
         }

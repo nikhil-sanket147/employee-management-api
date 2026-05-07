@@ -11,5 +11,8 @@
         public bool IsActive { get; set; } = true;
 
         public bool IsArchieved { get; set; } = false;
+
+        //navigation property
+        public ICollection<Product> Products { get; set; } = new List<Product>();
     }
 }

@@ -13,5 +13,10 @@ namespace NikhilTestWebApplication.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<User> Users { get; set; }
 
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Product>().HasOne(p => p.User).WithMany(u => u.Products).HasForeignKey(p =>  p.UserId);
+        }
     }
 }

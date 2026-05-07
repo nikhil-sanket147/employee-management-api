@@ -12,7 +12,7 @@ namespace NikhilTestWebApplication.Services
             _http = factory.CreateClient("UserService");
         }
 
-        public async Task<UserDto?> GetUserById(int id)
+        public async Task<UserDto?> GetUserById(Guid id)
         {
             return await _http.GetFromJsonAsync<UserDto>($"api/User/Get/{id}");
         }

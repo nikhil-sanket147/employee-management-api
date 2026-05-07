@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NikhilTestWebApplication.Models;
 using NikhilTestWebApplication.Interfaces;
+using NikhilTestWebApplication.Models;
+using NikhilTestWebApplication.Services;
 
 namespace NikhilTestWebApplication.Controllers
 {
@@ -10,9 +11,12 @@ namespace NikhilTestWebApplication.Controllers
     {
         private readonly IProductService _productService;
 
-        public ProductController(IProductService productService)
+        private readonly UserServiceClient _userClient;
+
+        public ProductController(IProductService productService, UserServiceClient userClient)
         {
             _productService = productService;
+            _userClient = userClient;
         }
 
         [HttpGet]
@@ -23,7 +27,7 @@ namespace NikhilTestWebApplication.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById(Guid id)
         {
             var product = await _productService.GetProductById(id);
             if (product == null)
@@ -33,9 +37,23 @@ namespace NikhilTestWebApplication.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Product product)
+        public async Task<IActionResult> Create(ProductCreateDto dto)
         {
+            var product = new Product
+            {
+                UserId = dto.UserId,
+                ProductName = dto.ProductName,
+                Price = dto.Price
+            };
+
             await _productService.AddProduct(product);
+
+            // Fetch user
+            var user = await _userClient.GetUserById(product.UserId);
+
+            // Enrich response
+            product.UserName = user?.Username;
+
             return Ok(product);
         }
 

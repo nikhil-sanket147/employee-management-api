@@ -36,7 +36,7 @@ namespace NikhilTestWebApplication.Middleware
             var response = new ErrorResponse
             {
                 Success = false,
-                Message = "Something went wrong",
+                Message = exception.Message
             };
 
             if (exception is ValidationException validationException) {
